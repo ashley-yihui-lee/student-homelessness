@@ -1,48 +1,43 @@
-# connect-to-census
+# Student Homelessness in NYC Public Schools
 
-In this assignment, you will connect your data to census data and do a bit of basic exploratory data analysis (EDA) on your dataset. The EDA will be:
-* 1-D (distribution of your data) 
-* 2-D scatterplots (comparing your data to census variables)
+This repository contains the data, code, and analysis for a project investigating the relationship between student demographics and housing instability in New York City public schools, with a particular focus on students living in temporary housing.
 
-## Assignment
+## Project Overview
 
-Identify the geospatial columns in your data. You may have addresses or latitude and longitude. In this assignment you will 
+The goal of this project is to identify which student populations are more vulnerable to homelessness and which schools may be under- or over-serving students in temporary housing. The analysis uses regression modeling to explore the connection between student demographics (e.g., English Language Learner status, race, and poverty levels) and the percentage of students in temporary housing across schools.
 
-### Part 1: Geocoding your data and joining it with Census data
+## Files and Structure
 
-1. In the `connect-to-census.ipynb` notebook, add code to:
+- `2021.csv`, `2022.xlsx`, `2023.xlsx`, `2024.xlsx`: Student housing data from the NYC Department of Education
+- `2024-demographic.csv`: School-level demographic data
+- `school-2024.csv`: Merged dataset used for regression analysis
+- `grad.csv`: Graduation outcome data for NYC high schools
+- `linear-regression-school.ipynb`: Notebook for school-level regression analysis
+- `grad.ipynb`: Notebook for regression on graduation rates and homelessness
+- `README.md`: This file
 
-    a. download your data
+## Methodology Summary
 
-    b. convert addresses --> lat/long (if the data doesn't already have lat/long)
-    
-    c. convert lat/long to census geography codes (like 'GEOID', 'STATE', 'COUNTY', 'TRACT', 'BLOCK', etc...). you may want to have more than one level of geography so you can do the analysis at different levels later on.
-    
-    d. this notebook should output a file containing your data and the census geographies you're interested in.
+School-level housing data was merged with demographic data by DBN (school code). A multiple linear regression model was used to estimate which factors predict higher rates of student homelessness. Variables tested include:
 
-    Example notebooks to help you with all this will live in [this repository](https://github.com/data4news/census-examples). You may use R or Python (or a combination of the two).
+- % White students (as a proxy for racial majority presence)
+- % Hispanic students
+- % Students in poverty
+- % English Language Learners (ELL)
 
+The strongest predictor was ELL status: schools with higher ELL populations also had significantly higher rates of students living in temporary housing.
 
-2. In `merge-with-census.ipynb` notebook, download some census data using `tidycensus` and merge it with your data.
+A second regression explored whether schools with higher homelessness rates also had lower graduation rates. Results suggest a modest but statistically significant negative relationship.
 
-### Part 2: Exploratory Data Analysis
+## Key Findings
 
-1. In the `distributions.ipynb` notebook, do some basic exploratory data analysis on **your dataset** in one dimension. Here you will explore the **distributions** of your data (histograms, boxplots, dotplots, etc). You may have already done this in the planning phase. If you haven't changed topics, feel free to just drop that notebook in as your distributions.ipynb notebook.
+- ELL students are particularly vulnerable to housing instability.
+- The model explains 44.5% of the variation in homelessness across schools.
+- Residual analysis highlights schools that significantly over- or under-perform expectations, pointing to potential leads for further reporting.
 
-2. In the `scatterplots.ipynb` notebook, do some basic exploratory data analysis on your data, but this time, merge in some census variables you're interested in and make some **scatterplots** with a variable from **your dataset** as the Y and variables from the **census data** as the X. 
+## Story Leads & Future Work
 
-### Part 3: Write up your findings
-
-1. In a new google doc, summarize what you've found so far. Think of this as a short memo of what you've done or the progress you've made towards pitching a story on this topic or using this dataset. You don't need to show all the charts, just the ones you found most interesting. What questions do you have that you'd like to dig more into? Do you think you've got an idea for a story angle? Write it informally as a memo to Dhrumil and Shivangi (your editors). 
-
-## Usage
-
-1. Rename `.env.example` to `.env` and put in your census API key. 
-   
-    _(FYI there is a file in this repo called `.gitignore` that will prevent `.env` from being tracked by git so you don't push your census key on accident._
-
-2. Run the notebooks. If you're unfamiliar with this setup, see https://github.com/dmil/jupyter-quickstart/
-
-## Note about large files
-
-If your data is too big (bigger than ~50MB), just upload the code to transform your data, not the data itself. If you want to make sure to never upload the datafile to git, just add the name of the file to the `.gitignore` file.
+- Interview schools with both high ELL and homelessness rates
+- Investigate schools with large positive or negative residuals to explore support gaps or best practices
+- Consider incorporating student disciplinary data in future work
+- Explore admission or retention barriers for students in temporary housing
